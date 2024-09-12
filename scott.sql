@@ -1338,6 +1338,8 @@ CREATE TABLE TABLE_PK2(
 INSERT INTO EMP VALUES (9999,'테스트', 'CLERK','7788','2017-04-30',1200,NULL,50);
 
 --외래키 제약 조건 테이블 생성
+--열이름 자료형() REFERENCES 부모테이블(열이름)
+
 --부모테이블 생성
 CREATE TABLE DEPT_FK(
 	DEPTNO NUMBER(2),
