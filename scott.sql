@@ -1167,6 +1167,7 @@ CREATE SEQUENCE DEPT_SEQ;
 
 --CREATE SEQUENCE SCOTT.DEPT_SEQ 
 --INCREMENT BY 1 (기본값은 1 - 증가를 얼마씩 할 것인가?)
+--START WITH 1 (시작값 지정) 
 --MINVALUE 1 (시퀀스에서 생성할 최소값)
 --MAXVALUE 9999999999999999999999999999 (시퀀스에서 생성할 최대값)
 --NOCYCLE (최대값에 도달 후 다시 시작값부터 시작할 것인지 여부)
