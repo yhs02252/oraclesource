@@ -127,3 +127,16 @@ CREATE TABLE BOARD (
 
 -- 시퀀스 생성 board_seq
 CREATE SEQUENCE board_seq;
+
+SELECT BNO,NAME,TITLE,READCNT,REGDATE FROM BOARD ORDER BY BNO DESC;
+
+-- board attach not null ==> null 가능
+ALTER TABLE BOARD MODIFY ATTACH varchar2(100) NULL;
+
+INSERT INTO BOARD(BNO,NAME,PASSWORD,TITLE,CONTENT,RE_REF,RE_LEV,RE_SEQ) VALUES(board_seq.nextval, 'hong','12345','board 작성','board 작성',board_seq.currval,0,0);
+
+SELECT * FROM BOARD WHERE BNO = 1;
+
+-- 수정
+-- bno와 password가 일치 시 title,content 수정
+UPDATE BOARD SET TITLE = 'dskods', CONTENT ='dsandlsa' WHERE BNO = 1 AND PASSWORD = 12345;
