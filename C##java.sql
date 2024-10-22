@@ -117,7 +117,7 @@ CREATE TABLE BOARD (
 	PASSWORD VARCHAR2(20) NOT NULL,
 	TITLE VARCHAR2(100) NOT NULL,
 	CONTENT VARCHAR2(2000) NOT NULL,
-	ATTACH VARCHAR2(100) NOT NULL,
+	ATTACH VARCHAR2(100) NOT NULL, -- 파일 경로입력을 위해 varchar2로 저장
 	RE_REF NUMBER NOT NULL,
 	RE_LEV NUMBER NOT NULL,
 	RE_SEQ NUMBER NOT NULL,
@@ -140,3 +140,48 @@ SELECT * FROM BOARD WHERE BNO = 1;
 -- 수정
 -- bno와 password가 일치 시 title,content 수정
 UPDATE BOARD SET TITLE = 'dskods', CONTENT ='dsandlsa' WHERE BNO = 1 AND PASSWORD = 12345;
+
+DELETE FROM BOARD WHERE BNO = 10 AND PASSWORD = 12345;
+
+UPDATE BOARD SET READCNT = READCNT + 1 WHERE BNO = 3;
+
+-- 더미 데이터
+INSERT INTO BOARD(BNO,NAME,PASSWORD,TITLE,CONTENT,RE_REF,RE_LEV,RE_SEQ)
+(SELECT board_seq.NEXTVAL,NAME,PASSWORD,TITLE,CONTENT,board_seq.CURRVAL,RE_LEV,RE_SEQ FROM BOARD);
+
+-- 댓글 처리
+
+-- 가장 최신글에 댓글 처리
+SELECT * FROM BOARD WHERE BNO = (SELECT MIN(bno) FROM BOARD)
+
+-- 그룹 개념
+
+-- 댓글 추가(re_ref : 부모글의 re_ref 넣어주기)
+-- re_lev : 부모글 re_lev + 1
+-- re_seq : 부모글 re_seq + 1
+INSERT INTO BOARD(BNO,NAME,PASSWORD,TITLE,CONTENT,RE_REF,RE_LEV,RE_SEQ)
+VALUES(board_seq.nextval, 'hong','12345','board 작성','board 작성',663,1,1);
+--VALUES(board_seq.nextval, 'hong','12345','board 작성','board 작성',663,0,0);
+
+--UPDATE BOARD SET RE_LEV = 1, RE_SEQ = 1 WHERE BNO = 664;
+
+-- 원본글과 댓글 함께 조회
+SELECT * FROM BOARD WHERE RE_REF = 663;
+
+-- 두번째 댓글 추가(최신순 조회 : re_seq)
+-- re_seq가 낮을수록 최신글이라면
+
+-- 원본글
+--  ㄴ댓글2
+--    ㄴ댓글2-1
+--  ㄴ댓글1
+
+-- 댓글2 추가
+-- 먼저 들어간 댓글이 있다면 re_seq 값을 + 1 해야 함 
+-- UPDATE BOARD SET RE_SEQ = RE_SEQ + 1 WHERE RE_REF = 부모글 RE_REF AND RE_SEQ > 부모글 RE_SEQ;
+UPDATE BOARD SET RE_SEQ = RE_SEQ + 1 WHERE RE_REF = 663 AND RE_SEQ > 0;
+
+INSERT INTO BOARD(BNO,NAME,PASSWORD,TITLE,CONTENT,RE_REF,RE_LEV,RE_SEQ)
+VALUES(board_seq.nextval, 'hong','12345','board 작성','board 작성',663,1,1);
+
+SELECT * FROM BOARD WHERE RE_REF = 663 ORDER BY RE_REF DESC, RE_SEQ ASC;
