@@ -209,3 +209,25 @@ WHERE RNUM>10;
 
 -- rownum : 1page * = 10 = 10
 -- rnum : (1page - 1) * 10
+
+-- 검색어 기준으로 개수
+SELECT COUNT(*) FROM BOARD WHERE TITLE LIKE '%자바%';
+SELECT COUNT(*) FROM BOARD WHERE CONTENT LIKE '%자바%';
+SELECT COUNT(*) FROM BOARD WHERE NAME LIKE '%자바%';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
