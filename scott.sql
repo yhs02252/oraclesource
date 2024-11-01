@@ -605,8 +605,8 @@ ORDER BY
 	--등가조인(*) : 테이블 연결 후 출력 행을 각 테이블의 특정 열에 일치한 데이터를 기준으로 선정
 	--비등가조인 : 등가조인 이외의 방식
 --외부조인(OUTER JOIN)
-	--왼쪽외부조인(LEFT OUTER JOIN) : 오른쪽 테이블에 +기호
-	--오른쪽외부조인(RIGHT OUTER JOIN) : 왼쪽 테이블에 + 기호
+	--왼쪽외부조인(LEFT OUTER JOIN) : 오른쪽 테이블에 +기호 // 왼쪽 테이블을 기준으로 정보를 가져옴
+	--오른쪽외부조인(RIGHT OUTER JOIN) : 왼쪽 테이블에 + 기호 // 오르쪽 테이블을 기준으로 정보를 가져옴
 	--전체외부조인(FULL OUTER JOIN)
 
 --SELECT * FROM EMP, DEPT;
