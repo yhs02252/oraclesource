@@ -79,4 +79,15 @@ UPDATE PARENT SET NAME = '부모5' WHERE ID = 5;
 --무결성 제약조건이 위배되었습니다- 자식 레코드가 발견되었습니다
 DELETE FROM PARENT p WHERE ID = 4;
 
-INSERT value(spoets_member_seq.nextval. )
+-- ProBoard ID 기준으로 내림차순
+SELECT * FROM PRO_BOARD pb ORDER BY PB.ID DESC ;
+
+SELECT * FROM PRO_BOARD pb ;
+SELECT * FROM PRO_BOARD pb WHERE PB.ID > 0 ORDER BY PB.ID DESC ;
+
+-- 실행계획
+-- 1) FULL
+-- 2) INDEX(RANGE SCAN)
+
+-- Member 와 Team 내부조인 : 팀명이 team2 인 경우
+SELECT * FROM JPQL_MEMBER jm JOIN JPQL_TEAM jt ON JM.TEAM_TEAM_ID = jt.TEAM_ID WHERE jt.TEAM_NAME = 'team2';
