@@ -91,3 +91,58 @@ SELECT * FROM PRO_BOARD pb WHERE PB.ID > 0 ORDER BY PB.ID DESC ;
 
 -- Member 와 Team 내부조인 : 팀명이 team2 인 경우
 SELECT * FROM JPQL_MEMBER jm JOIN JPQL_TEAM jt ON JM.TEAM_TEAM_ID = jt.TEAM_ID WHERE jt.TEAM_NAME = 'team2';
+
+-- mart_orders, mart_member, mart_order_item 조인
+SELECT * FROM MART_ORDERS mo JOIN MART_MEMBER mm ON mo.MEMBER_MEMBER_ID = mm.MEMBER_ID JOIN ORDER_ITEM oi ON mo.ORDER_ID = oi.ORDER_ORDER_ID ;
+
+SELECT
+	*
+FROM
+	MART_ORDERS mo
+JOIN MART_MEMBER mm ON
+	mo.MEMBER_MEMBER_ID = mm.MEMBER_ID
+LEFT JOIN ORDER_ITEM oi ON
+	mo.ORDER_ID = oi.ORDER_ORDER_ID ;
+
+-- 주문번호에 따른 주문 상품의 개수 추출
+SELECT oi.ORDER_ORDER_ID, COUNT(oi.COUNT) AS cnt , SUM(oi.COUNT) AS sum FROM ORDER_ITEM oi GROUP BY oi.ORDER_ORDER_ID ;
+
+-- 서브쿼리
+-- 1) from 에 서브쿼리 사용(인라인뷰)
+-- 2) where 에 서브쿼리 사용(중첩 서브쿼리)
+-- 3) select 에 서브쿼리 사용(스칼라)
+
+-- 주문내역 + 주문아이템
+-- join 할 때 같이 쓰는 서브쿼리
+SELECT
+	mo.ORDER_ID, mo.STATUS, A.cnt, A.sum
+FROM
+	MART_ORDERS mo
+LEFT JOIN (
+	SELECT
+		oi.ORDER_ORDER_ID AS OrderId,
+		COUNT(oi.COUNT) AS cnt ,
+		SUM(oi.COUNT) AS sum
+	FROM
+		ORDER_ITEM oi
+	GROUP BY
+		oi.ORDER_ORDER_ID) A ON
+	mo.ORDER_ID = a.OrderId;
+
+-- 쿼리문 자체를 서브쿼리와 함께 작성
+SELECT
+	mo.ORDER_ID,
+	mo.STATUS,
+	-- SELECT 절에 넣는 서브쿼리는 하나의 컬럼만 작성 가능
+	(
+	SELECT
+		COUNT(oi.ORDER_ORDER_ID)
+	FROM
+		ORDER_ITEM oi
+	WHERE
+		mo.ORDER_ID = oi.ORDER_ORDER_ID
+	GROUP BY
+		oi.ORDER_ORDER_ID) AS cnt
+	-- 두번째 컬럼이 필요하면 새로운 서브쿼리 작성 필요
+FROM
+	MART_ORDERS mo JOIN MART_MEMBER mm ON mo.MEMBER_MEMBER_ID = mm.MEMBER_ID ;
