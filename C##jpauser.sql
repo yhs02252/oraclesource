@@ -177,3 +177,23 @@ DELETE FROM BOARD b WHERE b.BOARD_ID
 -- 특정 bno의 댓글 추출
 SELECT *
 FROM REPLY r WHERE BOARD_BOARD_ID = 10 ORDER BY r.RNO DESC ;
+
+
+
+   select
+        cm1_0.email,
+        cm1_0.regdate,
+        cm1_0.from_social,
+        cm1_0.last_regdate,
+        cm1_0.name,
+        cm1_0.password,
+        r1_0.club_member_email,
+        r1_0.roles
+    from
+        club_member cm1_0
+    left join
+        club_member_roles r1_0
+            on cm1_0.email=r1_0.club_member_email
+    where
+        cm1_0.email='user1@naver.com'
+        and cm1_0.from_social=0;
