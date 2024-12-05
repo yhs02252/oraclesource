@@ -197,3 +197,51 @@ FROM REPLY r WHERE BOARD_BOARD_ID = 10 ORDER BY r.RNO DESC ;
     where
         cm1_0.email='user1@naver.com'
         and cm1_0.from_social=0;
+
+-- ========================================================================
+SELECT * FROM BOOKTBL b WHERE BOOK_ID = 2;
+
+-- booktbl + publisher + category
+-- category명, 제목, 저자, 출판사명
+-- 페이지 나누기 전
+SELECT
+	c.CATEGORY_NAME,
+	b.TITLE,
+	b.WRITER,
+	p.PUBLISHER_NAME
+	FROM BOOKTBL b
+JOIN CATEGORY c ON
+	b.CATEGORY_CATEGORY_ID = c.CATEGORY_ID
+JOIN PUBLISHER p ON
+	p.PUBLISHER_ID = b.PUBLISHER_PUBLISHER_ID;
+
+	
+-- 페이지 나누기 + 검색
+SELECT *
+FROM (SELECT rownum rn, b.* FROM (SELECT * FROM BOOKTBL b ORDER BY BOOK_ID DESC) b
+	  WHERE (title LIKE '%제목%' OR WRITER LIKE '%저자%') 
+	  AND rownum <= 20) 
+WHERE rn>10;
+
+SELECT t.book_id, t.title, t.PUBLISHER_ID, t.PUBLISHER_NAME, t.CATEGORY_NAME, t.CATEGORY_ID
+FROM (SELECT
+	rownum rn,
+	b1.*
+FROM
+	(
+	SELECT
+		*
+	FROM
+		BOOKTBL b
+	JOIN CATEGORY c ON
+		b.CATEGORY_CATEGORY_ID = c.CATEGORY_ID
+	JOIN PUBLISHER p ON
+		p.PUBLISHER_ID = b.PUBLISHER_PUBLISHER_ID
+	WHERE
+		b.BOOK_ID > 0
+	ORDER BY
+		b.BOOK_ID DESC) b1
+WHERE
+	(category_name LIKE '%소셜%') AND 
+	rownum <= 10) t
+WHERE rn > 0;
